@@ -185,16 +185,6 @@ ExceptionHandler (ExceptionType which)
 
 		}
 
-
-
-
-
-
-
-
-
-
-
 		#endif //CHANGED 
 
 
