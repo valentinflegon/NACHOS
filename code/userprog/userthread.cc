@@ -17,6 +17,8 @@ struct *schmurtz = malloc(sizeof(int)*2)
 int do_ThreadCreate(int f, int arg){
     DEBUG('t', 'do_ThreadCreate');
     Thread *newThread = new Thread(" xxx ");
+    schmurtz.f = f;
+    schmurtz.arg = arg;
     newThread->Start(StartUserThread,schmurtz);
     StartUserThread(schmurtz);
     //test si y a de la place dans la pile reurn -1 si pas de place 
