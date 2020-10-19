@@ -180,8 +180,9 @@ ExceptionHandler (ExceptionType which)
 		case SC_ThreadExit:{
 			DEBUG('t',"ThreadExit");
 			do_ThreadExit();
-			//interrupt->Halt(); if c'est le dernier threads
+			//interrupt->Halt(); if c'est le dernier threads sjdsf
 			break;
+
 		}
 
 
