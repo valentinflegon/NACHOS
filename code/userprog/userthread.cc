@@ -8,6 +8,7 @@ struct schmurtz
     int arg;
 };
 
+
 //DEBUG('x', "mon debug %d\n", mavar);
 
 /****************************
@@ -19,6 +20,7 @@ int do_ThreadCreate(int f, int arg){
     DEBUG('t', "do_ThreadCreate");
     Thread *newThread = new Thread("new thread");
     struct schmurtz *s;
+    s = (struct schmurtz*) malloc(2*sizeof(int));
     s->f = f;
     s->arg = arg;
     newThread->Start(StartUserThread,s);
