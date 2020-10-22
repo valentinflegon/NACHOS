@@ -1,4 +1,4 @@
-// exception.cc 
+// exception.cc
 //      Entry point into the Nachos kernel from user programs.
 //      There are two kinds of things that can cause control to
 //      transfer back to here from user code:
@@ -9,7 +9,7 @@
 //
 //      exceptions -- The user code does something that the CPU can't handle.
 //      For instance, accessing memory that doesn't exist, arithmetic errors,
-//      etc.  
+//      etc.
 //
 //      Interrupts (which can also cause control to transfer from user
 //      code into the Nachos kernel) are handled elsewhere.
@@ -18,7 +18,7 @@
 // Everything else core dumps.
 //
 // Copyright (c) 1992-1993 The Regents of the University of California.
-// All rights reserved.  See copyright.h for copyright notice and limitation 
+// All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
@@ -29,8 +29,8 @@
 
 /**********************************
  * copyStringFromMachine
- * 
- **********************************/	
+ *
+ **********************************/
 #ifdef CHANGED
 int copyStringFromMachine(int from, char *to, unsigned size){
 	int x;
@@ -41,13 +41,13 @@ int copyStringFromMachine(int from, char *to, unsigned size){
 			return i;
 		}
 	}
-	to[size] = '\0'; 
+	to[size] = '\0';
 	return size;
 }
 
 /**********************************
  * copyStringToMachine
- * 
+ *
  **********************************/
 int copyStringToMachine(int to, char *from,unsigned size){
 for (unsigned i=0; i<size-1;i++)
@@ -93,12 +93,12 @@ UpdatePC ()
 //              arg3 -- r6
 //              arg4 -- r7
 //
-//      The result of the system call, if any, must be put back into r2. 
+//      The result of the system call, if any, must be put back into r2.
 //
 // And don't forget to increment the pc before returning. (Or else you'll
 // loop making the same system call forever!
 //
-//      "which" is the kind of exception.  The list of possible exceptions 
+//      "which" is the kind of exception.  The list of possible exceptions
 //      are in machine.h.
 //----------------------------------------------------------------------
 
@@ -120,7 +120,7 @@ ExceptionHandler (ExceptionType which)
 		    interrupt->Halt();
 		    break;
 		  }
-		#ifdef CHANGED		
+		#ifdef CHANGED
 		case SC_Exit:
 		  {
 		    DEBUG ('s', "Exit\n");
@@ -134,7 +134,7 @@ ExceptionHandler (ExceptionType which)
 			consoledriver->PutChar(car);
 		    break;
 		  }
-		
+
 		case SC_PutString:{
 			DEBUG ('s',"PutString\n");
 			char to[MAX_STRING_SIZE];
@@ -155,7 +155,7 @@ ExceptionHandler (ExceptionType which)
 		  {
 		    DEBUG ('s', "GetChar\n");
 			int i = consoledriver->GetChar();
-			if( i == 10){ //   EOF case   
+			if( i == 10){ //   EOF case
 				machine->WriteRegister(2,'\0');
 				break;
 			}
@@ -172,7 +172,9 @@ ExceptionHandler (ExceptionType which)
 
 		case SC_ThreadCreate:{
 			DEBUG('t',"ThreadCreate");
-			int f, arg;//to define
+			int f, arg;
+			f = machine->ReadRegister (4);
+			arg = machine->ReadRegister (5);
 			do_ThreadCreate(f,arg);
 			break;
 		}
@@ -180,12 +182,12 @@ ExceptionHandler (ExceptionType which)
 		case SC_ThreadExit:{
 			DEBUG('t',"ThreadExit");
 			do_ThreadExit();
-			//interrupt->Halt(); if c'est le dernier threads 
+			//interrupt->Halt(); if c'est le dernier threads
 			break;
 
 		}
 
-		#endif //CHANGED 
+		#endif //CHANGED
 
 
 
