@@ -1,7 +1,7 @@
 #ifdef CHANGED
 
 #include "userthread.h"
-struct *schmurtz = malloc(sizeof(int)*2)
+struct schmurtz
 {
     int f;
     int arg;
@@ -11,26 +11,27 @@ struct *schmurtz = malloc(sizeof(int)*2)
 
 /****************************
  * do_ThreadCreate
- * 
+ *
  ****************************/
 
 int do_ThreadCreate(int f, int arg){
-    DEBUG('t', 'do_ThreadCreate');
-    Thread *newThread = new Thread(" xxx ");
+    DEBUG('t', "do_ThreadCreate");
+    Thread *newThread = new Thread("new thread");
+    struct schmurtz s = malloc(sizeof(int)*2);
     schmurtz.f = f;
     schmurtz.arg = arg;
     newThread->Start(StartUserThread,schmurtz);
-    StartUserThread(schmurtz);
-    //test si y a de la place dans la pile reurn -1 si pas de place 
+    //StartUserThread(schmurtz);
+    //test si y a de la place dans la pile reurn -1 si pas de place
     //ici
 }
 
 /****************************
  * StartUserThread
- * 
+ *
  ****************************/
 static void StartUserThread(void *schmurtz){ //voir AddrSpace
-    DEBUG('t','StartUserThread \n');
+    DEBUG('t',"StartUserThread \n");
     // similaire a AddrSpace InitRegisters
     int i;
     for (i = 0; i < NumTotalRegs; i++){
