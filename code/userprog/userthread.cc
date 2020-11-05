@@ -59,8 +59,10 @@ static void StartUserThread(void *arg){ //voir AddrSpace
  * détruit le thread Nachos
  ****************************/
 void do_ThreadExit(){
-  if (COUNTER>0)
+  if (COUNTER>0){
     currentThread->Finish();
+    COUNTER--;
+  }
   if (COUNTER==0)
     interrupt->Halt ();
 }
