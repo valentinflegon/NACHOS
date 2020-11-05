@@ -1,7 +1,7 @@
 #ifdef CHANGED
 
 #include "userthread.h"
-
+int COUNTER;
 struct schmurtz
 {
     int f;
@@ -19,6 +19,7 @@ struct schmurtz
 int do_ThreadCreate(int f, int arg){
     DEBUG('t', "do_ThreadCreate");
     Thread *newThread = new Thread("new thread");
+    COUNTER++;
     struct schmurtz *s;
     s = (struct schmurtz*) malloc(2*sizeof(int));
     s->f = f;
@@ -28,6 +29,7 @@ int do_ThreadCreate(int f, int arg){
 
     //test si y a de la place dans la pile reurn -1 si pas de place
     //ici
+    return 1;
 }
 
 /****************************
@@ -57,7 +59,10 @@ static void StartUserThread(void *arg){ //voir AddrSpace
  * détruit le thread Nachos
  ****************************/
 void do_ThreadExit(){
+  if (COUNTER>0)
     currentThread->Finish();
+  if (COUNTER==0)
+    interrupt->Halt ();
 }
 
 #endif

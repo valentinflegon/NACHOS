@@ -184,7 +184,7 @@ AddrSpace::InitRegisters ()
 int
 AddrSpace::AllocateUserStack ()
 {
-    return numPages*PageSize - 256;
+    return numPages*PageSize -16 - 256;
 }
 
 //----------------------------------------------------------------------
