@@ -20,18 +20,19 @@ struct schmurtz
  ****************************/
 
 int do_ThreadCreate(int f, int arg){
-    //bitmap = new BitMap (UserStacksAreaSize/256);
-    //if (bitmap.numclear() !=0 ){}
-    DEBUG('t', "do_ThreadCreate");
-    Thread *newThread = new Thread("new thread");
-    COUNTER++;
-    struct schmurtz *s;
-    s = (struct schmurtz*) malloc(2*sizeof(int));
-    s->f = f;
-    s->arg = arg;
-    //s->pos = bitmap.find ();
-    newThread->Start(StartUserThread,s);
-    //return 1;
+    if (bitmap->NumClear() !=0 ){
+      DEBUG('t', "do_ThreadCreate");
+      Thread *newThread = new Thread("new thread");
+      COUNTER++;
+      struct schmurtz *s;
+      s = (struct schmurtz*) malloc(2*sizeof(int));
+      s->f = f;
+      s->arg = arg;
+      currentThread->pos = bitmap->Find ();
+      //s->pos =
+      newThread->Start(StartUserThread,s);
+      return 1;
+    }
 
     //test si y a de la place dans la pile reurn -1 si pas de place
     //ici
@@ -55,8 +56,8 @@ static void StartUserThread(void *arg){ //voir AddrSpace
     machine->WriteRegister (4,ptr->arg);
     //DEBUG('x', "mon debug %d\n", mavar);
     machine->WriteRegister (NextPCReg, machine->ReadRegister(PCReg) + 4);
-    machine->WriteRegister (StackReg, currentThread->space->AllocateUserStack ());
-    //machine->WriteRegister (StackReg, currentThread->space->AllocateUserStack (ptr->pos) );
+    //machine->WriteRegister (StackReg, currentThread->space->AllocateUserStack ());
+    machine->WriteRegister (StackReg, currentThread->space->AllocateUserStack (currentThread->pos) );
     machine->Run();
 
 }

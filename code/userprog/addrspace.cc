@@ -22,7 +22,7 @@
 #include "syscall.h"
 #include "new"
 
-//static BitMap *bitmap;
+static BitMap *bitmap;
 
 //----------------------------------------------------------------------
 // SwapHeader
@@ -72,6 +72,8 @@ AddrSpace::AddrSpace (OpenFile * executable)
 {
     unsigned int i, size;
 
+    bitmap = new BitMap (UserStacksAreaSize/256);
+    bitmap->Mark (0);
     executable->ReadAt (&noffH, sizeof (noffH), 0);
     if ((noffH.noffMagic != NOFFMAGIC) &&
 	(WordToHost (noffH.noffMagic) == NOFFMAGIC))
