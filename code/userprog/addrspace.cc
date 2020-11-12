@@ -22,7 +22,6 @@
 #include "syscall.h"
 #include "new"
 
-static BitMap *bitmap;
 
 //----------------------------------------------------------------------
 // SwapHeader
@@ -186,9 +185,9 @@ AddrSpace::InitRegisters ()
 //----------------------------------------------------------------------
 
 int
-AddrSpace::AllocateUserStack (/* int i*/)
+AddrSpace::AllocateUserStack (int i)
 {
-    return numPages*PageSize -16 - 256;// - bitmap.pos(id)*256
+    return numPages*PageSize -16 - i*256;// - bitmap.pos(id)*256
 }
 
 //----------------------------------------------------------------------

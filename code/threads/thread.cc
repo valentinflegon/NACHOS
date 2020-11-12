@@ -49,7 +49,7 @@ Thread::Thread (const char *threadName)
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
-    //pos = NULL;
+    pos = NULL;
 #ifdef USER_PROGRAM
     if (currentThread)
 	// Inherit space from father

@@ -32,10 +32,11 @@ class AddrSpace:dontcopythis
 
     void InitRegisters ();	// Initialize user-level CPU registers,
     // before jumping to user code
-    int AllocateUserStack (/*int i*/);
+    int AllocateUserStack (int i);
 
     void SaveState ();		// Save/restore address space-specific
     void RestoreState ();	// info on a context switch
+    BitMap *bitmap;
 
 
     unsigned Dump(FILE *output, unsigned addr_s, unsigned sections_x, unsigned virtual_x, unsigned virtual_width,

@@ -20,7 +20,7 @@ struct schmurtz
  ****************************/
 
 int do_ThreadCreate(int f, int arg){
-    if (bitmap->NumClear() !=0 ){
+    if (currentThread->space->bitmap->NumClear() !=0 ){
       DEBUG('t', "do_ThreadCreate");
       Thread *newThread = new Thread("new thread");
       COUNTER++;
@@ -28,7 +28,7 @@ int do_ThreadCreate(int f, int arg){
       s = (struct schmurtz*) malloc(2*sizeof(int));
       s->f = f;
       s->arg = arg;
-      currentThread->pos = bitmap->Find ();
+      currentThread->pos = currentThread->space->bitmap->Find ();
       //s->pos =
       newThread->Start(StartUserThread,s);
       return 1;
