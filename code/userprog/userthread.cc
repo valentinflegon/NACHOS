@@ -1,12 +1,15 @@
 #ifdef CHANGED
 
 #include "userthread.h"
-int COUNTER;
+int COUNTER = 1;
+
 struct schmurtz
 {
     int f;
     int arg;
+    //int pos;
 };
+//static BitMap *bitmap;
 
 
 //DEBUG('x', "mon debug %d\n", mavar);
@@ -17,6 +20,8 @@ struct schmurtz
  ****************************/
 
 int do_ThreadCreate(int f, int arg){
+    //bitmap = new BitMap (UserStacksAreaSize/256);
+    //if (bitmap.numclear() !=0 ){}
     DEBUG('t', "do_ThreadCreate");
     Thread *newThread = new Thread("new thread");
     COUNTER++;
@@ -24,12 +29,14 @@ int do_ThreadCreate(int f, int arg){
     s = (struct schmurtz*) malloc(2*sizeof(int));
     s->f = f;
     s->arg = arg;
+    //s->pos = bitmap.find ();
     newThread->Start(StartUserThread,s);
-    //StartUserThread(schmurtz);
+    //return 1;
 
     //test si y a de la place dans la pile reurn -1 si pas de place
     //ici
-    return 1;
+
+    return -1;
 }
 
 /****************************
@@ -49,7 +56,7 @@ static void StartUserThread(void *arg){ //voir AddrSpace
     //DEBUG('x', "mon debug %d\n", mavar);
     machine->WriteRegister (NextPCReg, machine->ReadRegister(PCReg) + 4);
     machine->WriteRegister (StackReg, currentThread->space->AllocateUserStack ());
-
+    //machine->WriteRegister (StackReg, currentThread->space->AllocateUserStack (ptr->pos) );
     machine->Run();
 
 }
@@ -59,12 +66,18 @@ static void StartUserThread(void *arg){ //voir AddrSpace
  * détruit le thread Nachos
  ****************************/
 void do_ThreadExit(){
-  if (COUNTER>0){
-    currentThread->Finish();
+  if (COUNTER>1){
+    DEBUG('t',"On fait un finish \n");
     COUNTER--;
+    currentThread->Finish();
+    // tant que nummclear != 1 on fait currentThread->Finish()
+    //il faudrait clear le bit dans le bitmap mais comment savoir lequel est celui du thread ?
   }
-  if (COUNTER==0)
+  if (COUNTER==1)//quand numclear == 1
+  {
+    DEBUG('t',"On fait un halt \n");
     interrupt->Halt ();
+  }
 }
 
 #endif

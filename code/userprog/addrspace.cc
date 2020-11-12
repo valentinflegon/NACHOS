@@ -22,6 +22,8 @@
 #include "syscall.h"
 #include "new"
 
+//static BitMap *bitmap;
+
 //----------------------------------------------------------------------
 // SwapHeader
 //      Do little endian to big endian conversion on the bytes in the
@@ -182,9 +184,9 @@ AddrSpace::InitRegisters ()
 //----------------------------------------------------------------------
 
 int
-AddrSpace::AllocateUserStack ()
+AddrSpace::AllocateUserStack (/* int i*/)
 {
-    return numPages*PageSize -16 - 256;
+    return numPages*PageSize -16 - 256;// - bitmap.pos(id)*256
 }
 
 //----------------------------------------------------------------------

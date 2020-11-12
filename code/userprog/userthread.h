@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include "system.h"
 #include "addrspace.h"
+#include "bitmap.h"
 
 
 extern int do_ThreadCreate(int f, int arg);
