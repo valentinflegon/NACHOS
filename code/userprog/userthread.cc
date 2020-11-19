@@ -35,9 +35,7 @@ int do_ThreadCreate(int f, int arg){
       return 1;
     }
 
-    //test si y a de la place dans la pile reurn -1 si pas de place
-    //ici
-
+    printf("Il n'y a plus de place disponible sur la pile pour pouvoir créer et executer un nouveau thread\n");
     return -1;
 }
 

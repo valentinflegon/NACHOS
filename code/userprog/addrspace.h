@@ -20,7 +20,7 @@
 #include "list.h"
 #include "bitmap.h"
 
-#define UserStacksAreaSize		1024	// increase this as necessary!
+#define UserStacksAreaSize		1024	// 3072 increase this as necessary!
 
 class AddrSpace:dontcopythis
 {

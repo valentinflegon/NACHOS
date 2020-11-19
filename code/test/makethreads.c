@@ -1,10 +1,27 @@
 #include "syscall.h"
 
-int test (char c){
-  PutChar (c);
+int printChar (char c){
+    PutChar (c);
+    ThreadExit ();
+    return 0;
+}
+
+int print10Char (char c){
+  int i;
+  for (i = 0; i<15; i++)
+  {
+    ThreadCreate (printChar, c);
+  }
   ThreadExit ();
   return 0;
 }
+
+int test (char c){
+  print10Char (c);
+  ThreadExit ();
+  return 0;
+}
+
 int test2 (char s[]){
   PutString (s);
   ThreadExit ();
@@ -14,9 +31,7 @@ int test2 (char s[]){
 
 int main () {
   ThreadCreate (test, 'a');
-  //ThreadCreate (test, '\n');
   ThreadCreate (test2, "abcdzekh");
-  //ThreadCreate (test, '\n');
 
   ThreadExit ();
   return 0;
