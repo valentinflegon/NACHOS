@@ -71,12 +71,13 @@ void do_ThreadExit(){
   if (COUNTER>1){
     DEBUG('t',"On fait un finish \n");
     COUNTER--;
+    currentThread->space->bitmap->Clear (currentThread->pos);
     currentThread->Finish();
-    // tant que nummclear != 1 on fait currentThread->Finish()
-    //il faudrait clear le bit dans le bitmap mais comment savoir lequel est celui du thread ?
+    // tant que numclear != 1 on fait currentThread->Finish()
   }
   if (COUNTER==1)//quand numclear == 1
   {
+    currentThread->space->bitmap->Clear (currentThread->pos);
     DEBUG('t',"On fait un halt \n");
     interrupt->Halt ();
   }
