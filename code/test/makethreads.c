@@ -14,7 +14,9 @@ int test2 (char s[]){
 
 int main () {
   ThreadCreate (test, 'a');
+  //ThreadCreate (test, '\n');
   ThreadCreate (test2, "abcdzekh");
+  //ThreadCreate (test, '\n');
 
   ThreadExit ();
   return 0;

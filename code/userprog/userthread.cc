@@ -21,9 +21,10 @@ struct schmurtz
 
 int do_ThreadCreate(int f, int arg){
     if (currentThread->space->bitmap->NumClear() !=0 ){
-      DEBUG('t', "do_ThreadCreate");
-      Thread *newThread = new Thread("new thread");
+      DEBUG('t', "do_ThreadCreate\n");
       COUNTER++;
+      const char *name = "Thread";
+      Thread *newThread = new Thread(name+COUNTER);
       struct schmurtz *s;
       s = (struct schmurtz*) malloc(2*sizeof(int));
       s->f = f;
