@@ -21,9 +21,10 @@ struct schmurtz
 
 int do_ThreadCreate(int f, int arg){
     if (currentThread->space->bitmap->NumClear() !=0 ){
-      DEBUG('t', "do_ThreadCreate");
-      Thread *newThread = new Thread("new thread");
+      DEBUG('t', "do_ThreadCreate\n");
       COUNTER++;
+      const char *name = "Thread";
+      Thread *newThread = new Thread(name+COUNTER);
       struct schmurtz *s;
       s = (struct schmurtz*) malloc(2*sizeof(int));
       s->f = f;
@@ -34,9 +35,7 @@ int do_ThreadCreate(int f, int arg){
       return 1;
     }
 
-    //test si y a de la place dans la pile reurn -1 si pas de place
-    //ici
-
+    printf("Il n'y a plus de place disponible sur la pile pour pouvoir créer et executer un nouveau thread\n");
     return -1;
 }
 
@@ -70,12 +69,13 @@ void do_ThreadExit(){
   if (COUNTER>1){
     DEBUG('t',"On fait un finish \n");
     COUNTER--;
+    currentThread->space->bitmap->Clear (currentThread->pos);
     currentThread->Finish();
-    // tant que nummclear != 1 on fait currentThread->Finish()
-    //il faudrait clear le bit dans le bitmap mais comment savoir lequel est celui du thread ?
+    // tant que numclear != 1 on fait currentThread->Finish()
   }
   if (COUNTER==1)//quand numclear == 1
   {
+    currentThread->space->bitmap->Clear (currentThread->pos);
     DEBUG('t',"On fait un halt \n");
     interrupt->Halt ();
   }
