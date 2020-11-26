@@ -73,6 +73,8 @@ AddrSpace::AddrSpace (OpenFile * executable)
 
     bitmap = new BitMap (UserStacksAreaSize/256);
     bitmap->Mark (0);
+   
+   
     executable->ReadAt (&noffH, sizeof (noffH), 0);
     if ((noffH.noffMagic != NOFFMAGIC) &&
 	(WordToHost (noffH.noffMagic) == NOFFMAGIC))
