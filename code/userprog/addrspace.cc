@@ -191,6 +191,26 @@ AddrSpace::AllocateUserStack (int i)
 }
 
 //----------------------------------------------------------------------
+// AddrSpace::ReadAtVirtual
+//
+//----------------------------------------------------------------------
+
+static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numbytes,
+int position, TranslationEntry *pageTable, unisgned numPages)
+{
+  int fileLength = executable.Length ();
+
+  if ((numbytes > 0)&&(position < fileLength))
+  {
+    if ((position+numBytes) > fileLength)
+    {
+      numBytes = fileLength - position;
+    }
+  }
+
+}
+
+//----------------------------------------------------------------------
 // AddrSpace::Dump
 //      Dump program layout as SVG
 //----------------------------------------------------------------------
