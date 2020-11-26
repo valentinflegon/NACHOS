@@ -22,17 +22,8 @@ int test (char c){
   return 0;
 }
 
-int test2 (char s[]){
-  PutString (s);
-  ThreadExit ();
-  return 0;
-}
-
-
 int main () {
   ThreadCreate (test, 'a');
-  ThreadCreate (test2, "abcdzekh");
-
   ThreadExit ();
   return 0;
 }

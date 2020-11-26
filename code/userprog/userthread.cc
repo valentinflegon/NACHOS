@@ -7,17 +7,16 @@ struct schmurtz
 {
     int f;
     int arg;
-    //int pos;
 };
 //static BitMap *bitmap;
 
 
 //DEBUG('x', "mon debug %d\n", mavar);
 
-/****************************
- * do_ThreadCreate
- *
- ****************************/
+//----------------------------------------------------------------------
+// do_ThreadCreate(int f, int arg)
+//      
+//----------------------------------------------------------------------
 
 int do_ThreadCreate(int f, int arg){
     if (currentThread->space->bitmap->NumClear() !=0 ){
@@ -30,7 +29,6 @@ int do_ThreadCreate(int f, int arg){
       s->f = f;
       s->arg = arg;
       currentThread->pos = currentThread->space->bitmap->Find ();
-      //s->pos =
       newThread->Start(StartUserThread,s);
       return 1;
     }
@@ -39,10 +37,12 @@ int do_ThreadCreate(int f, int arg){
     return -1;
 }
 
-/****************************
- * StartUserThread
- *
- ****************************/
+//----------------------------------------------------------------------
+//  void StartUsrThread(void *arg)
+//      initialise les registres MIPS 
+//      et lance Machine::Run
+//      
+//----------------------------------------------------------------------
 static void StartUserThread(void *arg){ //voir AddrSpace
     struct schmurtz* ptr = (struct schmurtz*) arg;
     DEBUG('t',"StartUserThread \n");
