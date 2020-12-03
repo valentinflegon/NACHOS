@@ -23,6 +23,26 @@
 #include "new"
 
 
+///////////////////////
+//
+///////////////////////
+
+static void ReadVirtual(OpenFIle *executable, int virtualaddr, int numBytes, int position, TranslatonEntry *pageTable, unsigned numPages){
+   char buffe[numByte];
+   executable ->ReadAt(buffer,numBytes,position);
+    
+
+    machine->currentPageTable = pageTable;
+    machine->currentPageSize = numPages;
+
+   for(int i =0; i) {
+       WriteMem(virtualaddr, 1 ,buffer[i+1]);
+   }
+
+
+} 
+
+
 //----------------------------------------------------------------------
 // SwapHeader
 //      Do little endian to big endian conversion on the bytes in the
@@ -69,6 +89,8 @@ List AddrSpaceList;
 
 AddrSpace::AddrSpace (OpenFile * executable)
 {
+
+
     unsigned int i, size;
 
     bitmap = new BitMap (UserStacksAreaSize/256);
