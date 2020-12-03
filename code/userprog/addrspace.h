@@ -34,9 +34,6 @@ class AddrSpace:dontcopythis
     // before jumping to user code
     int AllocateUserStack (int i);
 
-    static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
-      int position, TranslationEntry *pageTable, unsigned numPages);
-
     void SaveState ();		// Save/restore address space-specific
     void RestoreState ();	// info on a context switch
     BitMap *bitmap;
