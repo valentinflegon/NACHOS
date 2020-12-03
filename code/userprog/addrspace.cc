@@ -23,26 +23,35 @@
 #include "new"
 
 
-///////////////////////
+
+
+//----------------------------------------------------------------------
+// AddrSpace::ReadAtVirtual
 //
-///////////////////////
+//----------------------------------------------------------------------
 
-static void ReadVirtual(OpenFIle *executable, int virtualaddr, int numBytes, int position, TranslatonEntry *pageTable, unsigned numPages){
-   char buffe[numByte];
-   executable ->ReadAt(buffer,numBytes,position);
-    
+static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
+int position, TranslationEntry *pageTable, unsigned numPages)
+{
+  int buffer[numBytes];
 
-    machine->currentPageTable = pageTable;
-    machine->currentPageSize = numPages;
+  executable->ReadAt (buffer, numBytes, position);
 
-   for(int i =0; i) {
-       WriteMem(virtualaddr, 1 ,buffer[i+1]);
-   }
+  TranslationEntry *savePageTable = machine->currentPageTable;
+  unsigned saveNumPage = machine->currentPageTableSize;
 
+  machine->currentPageTable = pageTable;
+  machine->currentPageTableSize = numPages;
 
-} 
+  for (int i = 0; i < numBytes; i++)
+  {
+    machine->WriteMem (virtualaddr, 1, buffer[i]);
+  }
 
+  machine->currentPageTable = savePageTable;
+  machine->currentPageTableSize = saveNumPage;
 
+}
 //----------------------------------------------------------------------
 // SwapHeader
 //      Do little endian to big endian conversion on the bytes in the
@@ -135,8 +144,17 @@ AddrSpace::AddrSpace (OpenFile * executable)
       {
 	  DEBUG ('a', "Initializing code segment, at 0x%x, size 0x%x\n",
 		 noffH.code.virtualAddr, noffH.code.size);
-	  executable->ReadAt (&(machine->mainMemory[noffH.code.virtualAddr]),
-			      noffH.code.size, noffH.code.inFileAddr);
+	//executable->ReadAt (&(machine->mainMemory[noffH.code.virtualAddr]),
+	//		      noffH.code.size, noffH.code.inFileAddr);
+
+        executable->ReadAtVirtual(
+            executable,
+            noffH.code.virtualAddr ,
+            noffH.code.size, 
+            noffH.code.inFileAddr,
+            pageTable, 
+            numPages
+            );
       }
     if (noffH.initData.size > 0)
       {
@@ -212,33 +230,6 @@ AddrSpace::AllocateUserStack (int i)
     return numPages*PageSize -16 - i*256;// - bitmap.pos(id)*256
 }
 
-//----------------------------------------------------------------------
-// AddrSpace::ReadAtVirtual
-//
-//----------------------------------------------------------------------
-
-static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
-int position, TranslationEntry *pageTable, unsigned numPages)
-{
-  char *buffer[numBytes];
-
-  executable->ReadAt (buffer, numBytes, position);
-
-  TranslationEntry *savePageTable = machine->currentPageTable;
-  int saveNumPage = machine->currentPageTableSize;
-
-  machine->currentPageTable = pageTable;
-  machine->currentPageTableSize = numPages;
-
-  for (int i = 0; i < numBytes; i++)
-  {
-    machine->WriteMem (virtualaddr, 1, buffer[i]);
-  }
-
-  machine->currentPageTable = savePageTable;
-  machine->currentPageTableSize = saveNumPage;
-
-}
 
 //----------------------------------------------------------------------
 // AddrSpace::Dump
