@@ -23,35 +23,6 @@
 #include "new"
 
 
-
-
-//----------------------------------------------------------------------
-// AddrSpace::ReadAtVirtual
-//
-//----------------------------------------------------------------------
-
-static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
-int position, TranslationEntry *pageTable, unsigned numPages)
-{
-  int buffer[numBytes];
-
-  executable->ReadAt (buffer, numBytes, position);
-
-  TranslationEntry *savePageTable = machine->currentPageTable;
-  unsigned saveNumPage = machine->currentPageTableSize;
-
-  machine->currentPageTable = pageTable;
-  machine->currentPageTableSize = numPages;
-
-  for (int i = 0; i < numBytes; i++)
-  {
-    machine->WriteMem (virtualaddr, 1, buffer[i]);
-  }
-
-  machine->currentPageTable = savePageTable;
-  machine->currentPageTableSize = saveNumPage;
-
-}
 //----------------------------------------------------------------------
 // SwapHeader
 //      Do little endian to big endian conversion on the bytes in the
@@ -91,6 +62,7 @@ List AddrSpaceList;
 static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
   int position, TranslationEntry *pageTable, unsigned numPages)
 {
+
   char buffer[numBytes];
 
   executable->ReadAt (buffer, numBytes, position);
@@ -162,7 +134,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     pageTable = new TranslationEntry[numPages];
     for (i = 0; i < numPages; i++)
       {
-	  pageTable[i].physicalPage = i;	// for now, phys page # = virtual page #
+	  pageTable[i].physicalPage = i++;	// for now, phys page # = virtual page #
 	  pageTable[i].valid = TRUE;
 	  pageTable[i].use = FALSE;
 	  pageTable[i].dirty = FALSE;
