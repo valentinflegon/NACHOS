@@ -95,8 +95,6 @@ AddrSpace::AddrSpace (OpenFile * executable)
 
     bitmap = new BitMap (UserStacksAreaSize/256);
     bitmap->Mark (0);
-   
-   
     executable->ReadAt (&noffH, sizeof (noffH), 0);
     if ((noffH.noffMagic != NOFFMAGIC) &&
 	(WordToHost (noffH.noffMagic) == NOFFMAGIC))
@@ -212,6 +210,34 @@ int
 AddrSpace::AllocateUserStack (int i)
 {
     return numPages*PageSize -16 - i*256;// - bitmap.pos(id)*256
+}
+
+//----------------------------------------------------------------------
+// AddrSpace::ReadAtVirtual
+//
+//----------------------------------------------------------------------
+
+static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
+int position, TranslationEntry *pageTable, unsigned numPages)
+{
+  char *buffer[numBytes];
+
+  executable->ReadAt (buffer, numBytes, position);
+
+  TranslationEntry *savePageTable = machine->currentPageTable;
+  int saveNumPage = machine->currentPageTableSize;
+
+  machine->currentPageTable = pageTable;
+  machine->currentPageTableSize = numPages;
+
+  for (int i = 0; i < numBytes; i++)
+  {
+    machine->WriteMem (virtualaddr, 1, buffer[i]);
+  }
+
+  machine->currentPageTable = savePageTable;
+  machine->currentPageTableSize = saveNumPage;
+
 }
 
 //----------------------------------------------------------------------

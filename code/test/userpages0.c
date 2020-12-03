@@ -2,7 +2,7 @@
 
 int printChar (char c){
     PutChar (c);
-    T hreadExit ();
+    ThreadExit ();
     return 0;
 }
 
