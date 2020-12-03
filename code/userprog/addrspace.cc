@@ -52,6 +52,38 @@ SwapHeader (NoffHeader * noffH)
 //----------------------------------------------------------------------
 List AddrSpaceList;
 
+
+
+//----------------------------------------------------------------------
+// AddrSpace::ReadAtVirtual
+//
+//----------------------------------------------------------------------
+
+static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
+  int position, TranslationEntry *pageTable, unsigned numPages)
+{
+  char buffer[numBytes];
+
+  executable->ReadAt (buffer, numBytes, position);
+
+  TranslationEntry *savePageTable = machine->currentPageTable;
+  int saveNumPage = machine->currentPageTableSize;
+
+  machine->currentPageTable = pageTable;
+  machine->currentPageTableSize = numPages;
+
+  for (int i = 0; i < numBytes; i++)
+  {
+    machine->WriteMem (virtualaddr, 1, buffer[i]);
+  }
+
+  machine->currentPageTable = savePageTable;
+  machine->currentPageTableSize = saveNumPage;
+
+}
+
+
+
 //----------------------------------------------------------------------
 // AddrSpace::AddrSpace
 //      Create an address space to run a user program.
@@ -113,17 +145,15 @@ AddrSpace::AddrSpace (OpenFile * executable)
       {
 	  DEBUG ('a', "Initializing code segment, at 0x%x, size 0x%x\n",
 		 noffH.code.virtualAddr, noffH.code.size);
-	  executable->ReadAt (&(machine->mainMemory[noffH.code.virtualAddr]),
-			      noffH.code.size, noffH.code.inFileAddr);
+	  ReadAtVirtual (executable, noffH.code.virtualAddr,
+			      noffH.code.size, noffH.code.inFileAddr, pageTable, numPages);
       }
     if (noffH.initData.size > 0)
       {
 	  DEBUG ('a', "Initializing data segment, at 0x%x, size 0x%x\n",
 		 noffH.initData.virtualAddr, noffH.initData.size);
-	  executable->ReadAt (&
-			      (machine->mainMemory
-			       [noffH.initData.virtualAddr]),
-			      noffH.initData.size, noffH.initData.inFileAddr);
+	  ReadAtVirtual (executable, noffH.initData.virtualAddr,
+			      noffH.initData.size, noffH.initData.inFileAddr, pageTable, numPages);
       }
 
     DEBUG ('a', "Area for stacks at 0x%x, size 0x%x\n",
@@ -190,33 +220,6 @@ AddrSpace::AllocateUserStack (int i)
     return numPages*PageSize -16 - i*256;// - bitmap.pos(id)*256
 }
 
-//----------------------------------------------------------------------
-// AddrSpace::ReadAtVirtual
-//
-//----------------------------------------------------------------------
-
-static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
-int position, TranslationEntry *pageTable, unsigned numPages)
-{
-  char *buffer[numBytes];
-
-  executable->ReadAt (buffer, numBytes, position);
-
-  TranslationEntry *savePageTable = machine->currentPageTable;
-  int saveNumPage = machine->currentPageTableSize;
-
-  machine->currentPageTable = pageTable;
-  machine->currentPageTableSize = numPages;
-
-  for (int i = 0; i < numBytes; i++)
-  {
-    machine->WriteMem (virtualaddr, 1, buffer[i]);
-  }
-
-  machine->currentPageTable = savePageTable;
-  machine->currentPageTableSize = saveNumPage;
-
-}
 
 //----------------------------------------------------------------------
 // AddrSpace::Dump
