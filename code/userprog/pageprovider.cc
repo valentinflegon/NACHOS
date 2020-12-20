@@ -21,7 +21,8 @@ PageProvider::~PageProvider ()
 int PageProvider::getEmptyPage ()
 {
   int empty_page = bitmap->Find ();
-  ASSERT (empty_page != -1);
+  if (empty_page == -1)
+    return -1;
   int addr_page = (empty_page*PageSize);
   void *mem_addr = &(machine->mainMemory[addr_page]);
   memset (mem_addr, 0, PageSize);
