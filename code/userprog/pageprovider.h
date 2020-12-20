@@ -1,4 +1,6 @@
 #ifdef CHANGED
+
+
 #ifndef PAGEPROVIDER_H
 #define PAGEPROVIDER_H
 
@@ -9,7 +11,7 @@
 #include "bitmap.h"
 
 
-class PageProvider::dontcopythis{
+class PageProvider:dontcopythis{
   public:
     PageProvider ();
     ~PageProvider (); //clean up
@@ -20,7 +22,7 @@ class PageProvider::dontcopythis{
 
   private:
     BitMap *bitmap;
-} 
+};
 
 #endif // PAGEPROVIDER_H
 
