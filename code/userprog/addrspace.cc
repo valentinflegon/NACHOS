@@ -131,6 +131,10 @@ AddrSpace::AddrSpace (OpenFile * executable)
     pageTable = new TranslationEntry[numPages];
     for (i = 0; i < numPages; i++)
       {
+          // avant le for, tester si il ya assez de pages dispo avec pp->numAvailPage
+          // faire pageprovider->getEmptypage
+          // si y'en a plus (valeur -1), faire une boucle jusqu'au i actuel pour liberer les pages precedentes
+          // puis quitter avec un code d'erreur
 	  pageTable[i].physicalPage = i+1;	// for now, phys page # = virtual page #
 	  pageTable[i].valid = TRUE;
 	  pageTable[i].use = FALSE;
