@@ -75,7 +75,7 @@ static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
 
   for (int i = 0; i < numBytes; i++)
   {
-    machine->WriteMem (virtualaddr, 1, buffer[i]);
+    machine->WriteMem (virtualaddr+i, 1, (int)buffer[i]);
   }
 
   machine->currentPageTable = savePageTable;
@@ -134,7 +134,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     pageTable = new TranslationEntry[numPages];
     for (i = 0; i < numPages; i++)
       {
-	  pageTable[i].physicalPage = i++;	// for now, phys page # = virtual page #
+	  pageTable[i].physicalPage = i+1;	// for now, phys page # = virtual page #
 	  pageTable[i].valid = TRUE;
 	  pageTable[i].use = FALSE;
 	  pageTable[i].dirty = FALSE;
