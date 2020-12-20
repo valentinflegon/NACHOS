@@ -26,7 +26,7 @@ int PageProvider::getEmptyPage ()
   int addr_page = (empty_page*PageSize);
   void *mem_addr = &(machine->mainMemory[addr_page]);
   memset (mem_addr, 0, PageSize);
-  return addr_page;  
+  return empty_page;
 } 
 
 void PageProvider::ReleasePage (int addr_page) 
