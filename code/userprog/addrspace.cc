@@ -139,21 +139,6 @@ AddrSpace::AddrSpace (OpenFile * executable)
 			pageTable = new TranslationEntry[numPages];
     	for (i = 0; i < numPages; i++)
       {
-<<<<<<< HEAD
-          // avant le for, tester si il ya assez de pages dispo avec pp->numAvailPage
-          // faire pageprovider->getEmptypage
-          // si y'en a plus (valeur -1), faire une boucle jusqu'au i actuel pour liberer les pages precedentes
-          // puis quitter avec un code d'erreur
-	  pageTable[i].physicalPage = pageprovider->getEmptyPage();//i+1;	// for now, phys page # = virtual page #
-	  pageTable[i].valid = TRUE;
-	  pageTable[i].use = FALSE;
-	  pageTable[i].dirty = FALSE;
-	  pageTable[i].readOnly = FALSE;	// if the code segment was entirely on
-	  // a separate page, we could set its
-	  // pages to be read-only
-      }
- 
-=======
 				// avant le for, tester si il ya assez de pages dispo avec pp->numAvailPage
 				// faire pageprovider->getEmptypage
 				// si y'en a plus (valeur -1), faire une boucle jusqu'au i actuel pour liberer les pages precedentes
@@ -174,7 +159,6 @@ AddrSpace::AddrSpace (OpenFile * executable)
 		} 
 		#endif // CHANGED	
 
->>>>>>> 08062f68e353513af65de89726ec015023e36b8c
 // then, copy in the code and data segments into memory
     if (noffH.code.size > 0)
       {
