@@ -80,6 +80,7 @@ static void ReadAtVirtual (OpenFile *executable, int virtualaddr, int numBytes,
   machine->currentPageTable = savePageTable;
   machine->currentPageTableSize = saveNumPage;
 
+
 }
 
 
@@ -127,44 +128,33 @@ AddrSpace::AddrSpace (OpenFile * executable)
 
     DEBUG ('a', "Initializing address space, num pages %d, total size 0x%x\n",
 	   numPages, size);
-// first, set up the translation
-    pageTable = new TranslationEntry[numPages];
-    for (i = 0; i < numPages; i++)
+		// first, set up the translation
+		#ifdef CHANGED
+		if (pageprovider->NumAvailPage () >= numPages)
+		{
+			pageprovider->BookPages (numPages);
+			pageTable = new TranslationEntry[numPages];
+    	for (i = 0; i < numPages; i++)
       {
-			#ifdef CHANGED 	
 				// avant le for, tester si il ya assez de pages dispo avec pp->numAvailPage
 				// faire pageprovider->getEmptypage
 				// si y'en a plus (valeur -1), faire une boucle jusqu'au i actuel pour liberer les pages precedentes
-				// puis quitter avec un code d'erreur
-
-				
-				int addr = pageprovider->getEmptyPage ();
-				//ASSERT (addr != -1);
-				if (addr == -1)
-				{
-					for (unsigned int j = 0; j < i; j++)
-						pageprovider->ReleasePage (pageTable[i].physicalPage);
-					interrupt->Halt ();
-				}
-				else{
-					//printf("on alloue la page %d\n",i);
-					pageTable[i].physicalPage = addr; //i+1 for now, phys page # = virtual page # +1
-					pageTable[i].valid = TRUE;
-					pageTable[i].use = FALSE;
-					pageTable[i].dirty = FALSE;
-					pageTable[i].readOnly = FALSE;	// if the code segment was entirely on
-					// a separate page, we could set its
-					// pages to be read-only
-				}  
-					
-					/*
-				pageTable[i].physicalPage = i+1; // for now, phys page # = virtual page # +1
+				// puis quitter avec un code d'erreur				// ou faire un throw bad alloc (l.118) a gerer dans le fork a la creation de l'addrspace
+				// printf("on alloue la page %d\n",i);
+				pageTable[i].physicalPage = pageprovider->getEmptyPage (); //i+1 for now, phys page # = virtual page # +1
 				pageTable[i].valid = TRUE;
 				pageTable[i].use = FALSE;
 				pageTable[i].dirty = FALSE;
-				pageTable[i].readOnly = FALSE; */
-			#endif // CHANGED	
-      }
+				pageTable[i].readOnly = FALSE;	// if the code segment was entirely on
+				// a separate page, we could set its
+				// pages to be read-only
+			} 	
+    }
+		else 
+		{
+			throw std::bad_alloc ();
+		} 
+		#endif // CHANGED	
 
 // then, copy in the code and data segments into memory
     if (noffH.code.size > 0)
