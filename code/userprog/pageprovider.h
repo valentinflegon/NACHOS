@@ -9,7 +9,7 @@
 #include "bitmap.h"
 
 
-class PageProvider::dontcopythis{
+class PageProvider:dontcopythis{
   public:
     PageProvider ();
     ~PageProvider (); //clean up
@@ -20,7 +20,7 @@ class PageProvider::dontcopythis{
 
   private:
     BitMap *bitmap;
-} 
+};
 
 #endif // PAGEPROVIDER_H
 

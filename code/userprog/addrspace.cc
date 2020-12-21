@@ -138,7 +138,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
           // faire pageprovider->getEmptypage
           // si y'en a plus (valeur -1), faire une boucle jusqu'au i actuel pour liberer les pages precedentes
           // puis quitter avec un code d'erreur
-	  pageTable[i].physicalPage = i+1;	// for now, phys page # = virtual page #
+	  pageTable[i].physicalPage = pageprovider->getEmptyPage();//i+1;	// for now, phys page # = virtual page #
 	  pageTable[i].valid = TRUE;
 	  pageTable[i].use = FALSE;
 	  pageTable[i].dirty = FALSE;
@@ -146,7 +146,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
 	  // a separate page, we could set its
 	  // pages to be read-only
       }
-
+ 
 // then, copy in the code and data segments into memory
     if (noffH.code.size > 0)
       {
@@ -169,6 +169,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     pageTable[0].valid = FALSE;			// Catch NULL dereference
 
     AddrSpaceList.Append(this);
+    machine->DumpMem("addrspace.svg");
 }
 
 //----------------------------------------------------------------------
