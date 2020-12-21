@@ -35,7 +35,7 @@ int PageProvider::getEmptyPage ()
   bitmapAvail->P ();
   int empty_page = bitmap->Find ();
   bitmapAvail->V ();
-  if (empty_page == -1)
+  if (empty_page == -1) //ASSERT empty_page != -1
     return -1;
   void *mem_addr = &(machine->mainMemory[empty_page*PageSize]);
   memset (mem_addr, 0, PageSize);

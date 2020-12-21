@@ -184,6 +184,15 @@ ExceptionHandler (ExceptionType which)
 			do_ThreadExit();
 			break;
 		}
+		
+		/*
+		case SC_ForkExec:{
+			int arg = machine->ReadRegister(4);
+			char* to = new char[MAX_STRING_SIZE+1];
+			//
+			do_ForkExec(to);
+			break;
+		} */	
 
 		#endif //CHANGED
 

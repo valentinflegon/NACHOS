@@ -24,10 +24,7 @@ class PageProvider:dontcopythis{
 
   private:
     BitMap *bitmap;
-<<<<<<< HEAD
-=======
     int free_pages;
->>>>>>> 08062f68e353513af65de89726ec015023e36b8c
 };
 
 #endif // PAGEPROVIDER_H

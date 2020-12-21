@@ -7,4 +7,4 @@
  ../threads/list.h ../userprog/bitmap.h ../filesys/openfile.h \
  ../threads/scheduler.h ../machine/interrupt.h ../machine/stats.h \
  ../machine/timer.h ../userprog/consoledriver.h ../machine/console.h \
- addrspace.h syscall.h
+ ../userprog/pageprovider.h addrspace.h syscall.h
