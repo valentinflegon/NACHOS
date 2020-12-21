@@ -23,6 +23,7 @@ Statistics *stats;		// performance metrics
 Timer *timer;			// the hardware timer device,
 					// for invoking context switches
 
+
 #ifdef FILESYS_NEEDED
 FileSystem *fileSystem;
 #endif
@@ -42,6 +43,7 @@ PostOffice *postOffice;
 #ifdef CHANGED
 #ifdef USER_PROGRAM
 ConsoleDriver *consoledriver;
+PageProvider *pageprovider;
 #endif
 #endif
 
@@ -183,6 +185,9 @@ Initialize (int argc, char **argv)
 
 #ifdef USER_PROGRAM
     machine = new Machine (debugUserProg);	// this must come first
+    #ifdef CHANGED
+    pageprovider = new PageProvider (); 
+    #endif 
 #endif
 
 #ifdef FILESYS

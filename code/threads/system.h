@@ -41,6 +41,8 @@ extern Timer *timer;		// the hardware alarm clock
 extern Machine *machine;	// user program memory and registers
 #ifdef CHANGED
 extern ConsoleDriver *consoledriver;
+#include "pageprovider.h" 
+extern PageProvider *pageprovider;
 #endif
 #endif
 
